@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associados</title>
+    
+</head>
+<body>
+    <h1> Associados</h1>
+
+    <div class="form-container">
+        <h3>Cadastro de Associado</h3>
+        <form id="formAssociado">
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome" name="nome" required><br><br>
+            
+            <label for="endereco">Endereço:</label><br>
+            <input type="text" id="endereco" name="endereco" required><br><br>
+            
+            <label for="cidade">Cidade:</label><br>
+            <input type="text" id="cidade" name="cidade" required><br><br>
+            
+            <label for="estado">Estado:</label><br>
+            <input type="text" id="estado" name="estado" required><br><br>
+            
+            <label for="cep">CEP:</label><br>
+            <input type="text" id="cep" name="cep" required><br><br>
+            
+            <button type="button" onclick="inserirAssociado()">Inserir Associado</button>
+        </form>
+    </div>
+
+    <div id="mensagem" style="color: green;"></div>
+
+    <h3>Lista de Associados</h3>
+    <table id="tabelaAssociados">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>CEP</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados dos associados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        let associados = [];
+
+        // Função para inserir um associado
+        function inserirAssociado() {
+            const nome = document.getElementById("nome").value;
+            const endereco = document.getElementById("endereco").value;
+            const cidade = document.getElementById("cidade").value;
+            const estado = document.getElementById("estado").value;
+            const cep = document.getElementById("cep").value;
+
+            if (nome && endereco && cidade && estado && cep) {
+                const associado = { nome, endereco, cidade, estado, cep };
+                associados.push(associado);
+                exibirAssociados();
+                document.getElementById("formAssociado").reset();
+                document.getElementById("mensagem").innerText = "Associado inserido com sucesso!";
+            } else {
+                document.getElementById("mensagem").innerText = "Por favor, preencha todos os campos.";
+                document.getElementById("mensagem").style.color = "red";
+            }
+        }
+
+        // Função para exibir os associados na tabela
+        function exibirAssociados() {
+            const tabela = document.getElementById("tabelaAssociados").getElementsByTagName("tbody")[0];
+            tabela.innerHTML = ""; // Limpa a tabela antes de adicionar os novos dados
+
+            associados.forEach((associado, index) => {
+                const row = tabela.insertRow();
+                row.innerHTML = `
+                    <td>${associado.nome}</td>
+                    <td>${associado.endereco}</td>
+                    <td>${associado.cidade}</td>
+                    <td>${associado.estado}</td>
+                    <td>${associado.cep}</td>
+                    <td>
+                        <button onclick="editarAssociado(${index})">Alterar</button>
+                        <button onclick="excluirAssociado(${index})">Excluir</button>
+                    </td>
+                `;
+            });
+        }
+
+        // Função para editar um associado
+        function editarAssociado(index) {
+            const associado = associados[index];
+            document.getElementById("nome").value = associado.nome;
+            document.getElementById("endereco").value = associado.endereco;
+            document.getElementById("cidade").value = associado.cidade;
+            document.getElementById("estado").value = associado.estado;
+            document.getElementById("cep").value = associado.cep;
+
+            // Alterar a ação do botão para atualizar o associado
+            const form = document.getElementById("formAssociado");
+            form.onsubmit = function(event) {
+                event.preventDefault();
+                atualizarAssociado(index);
+            };
+        }
+
+        // Função para atualizar um associado
+        function atualizarAssociado(index) {
+            const nome = document.getElementById("nome").value;
+            const endereco = document.getElementById("endereco").value;
+            const cidade = document.getElementById("cidade").value;
+            const estado = document.getElementById("estado").value;
+            const cep = document.getElementById("cep").value;
+
+            associados[index] = { nome, endereco, cidade, estado, cep };
+            exibirAssociados();
+            document.getElementById("formAssociado").reset();
+            document.getElementById("mensagem").innerText = "Associado atualizado com sucesso!";
+        }
+
+        // Função para excluir um associado
+        function excluirAssociado(index) {
+            associados.splice(index, 1);
+            exibirAssociados();
+            document.getElementById("mensagem").innerText = "Associado excluído com sucesso!";
+        }
+    </script>
+</body>
+</html>

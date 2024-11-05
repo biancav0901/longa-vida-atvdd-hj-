@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Planos</title>
+</head>
+<body>
+
+    <h1>Gestão de Planos</h1>
+
+    <!-- Seção de Cadastro de Plano -->
+    <div class="form-section">
+        <h2>Cadastrar Plano</h2>
+        <form id="formPlano">
+            <label for="numero">Número do Plano:</label>
+            <input type="text" id="numero" name="numero" required><br><br>
+
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao" required><br><br>
+
+            <label for="valor">Valor (R$):</label>
+            <input type="number" id="valor" name="valor" required><br><br>
+
+            <button type="button" class="btn" onclick="adicionarPlano()">Inserir Plano</button>
+        </form>
+    </div>
+
+    <!-- Seção de Consulta de Planos -->
+    <div class="form-section">
+        <h2>Consultar Planos</h2>
+        <input type="text" id="consultaNumero" placeholder="Número do plano para consulta">
+        <button class="btn" onclick="consultarPlano()">Consultar</button>
+    </div>
+
+    <!-- Tabela de Planos -->
+    <h2>Lista de Planos</h2>
+    <table id="tabelaPlanos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Descrição</th>
+                <th>Valor (R$)</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Planos serão adicionados aqui via JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        let planos = []; // Array para armazenar planos
+
+        function adicionarPlano() {
+            // Coleta os valores do formulário
+            const numero = document.getElementById("numero").value;
+            const descricao = document.getElementById("descricao").value;
+            const valor = document.getElementById("valor").value;
+
+            // Cria um objeto plano
+            const plano = { numero, descricao, valor: parseFloat(valor) };
+
+            // Adiciona o plano ao array
+            planos.push(plano);
+
+            // Atualiza a tabela de planos
+            atualizarTabela();
+
+            // Limpa os campos do formulário
+            document.getElementById("formPlano").reset();
+        }
+
+        function atualizarTabela() {
+            // Limpa a tabela
+            const tabela = document.getElementById("tabelaPlanos").getElementsByTagName('tbody')[0];
+            tabela.innerHTML = "";
+
+            // Preenche a tabela com os planos
+            planos.forEach((plano, index) => {
+                const row = tabela.insertRow();
+                row.innerHTML = `
+                    <td>${plano.numero}</td>
+                    <td>${plano.descricao}</td>
+                    <td>R$ ${plano.valor.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="alterarPlano(${index})">Alterar</button>
+                        <button class="btn btn-danger" onclick="excluirPlano(${index})">Excluir</button>
+                    </td>
+                `;
+            });
+        }
+
+        function alterarPlano(index) {
+            const plano = planos[index];
+            document.getElementById("numero").value = plano.numero;
+            document.getElementById("descricao").value = plano.descricao;
+            document.getElementById("valor").value = plano.valor;
+
+            // Remove o plano antigo e atualiza com a edição
+            planos.splice(index, 1);
+            atualizarTabela();
+        }
+
+        function excluirPlano(index) {
+            // Remove o plano do array
+            planos.splice(index, 1);
+
+            // Atualiza a tabela
+            atualizarTabela();
+        }
+
+        function consultarPlano() {
+            const numeroConsulta = document.getElementById("consultaNumero").value.trim();
+            const planoEncontrado = planos.find(plano => plano.numero === numeroConsulta);
+
+            if (planoEncontrado) {
+                alert(`Plano Encontrado:\nNúmero: ${planoEncontrado.numero}\nDescrição: ${planoEncontrado.descricao}\nValor: R$ ${planoEncontrado.valor.toFixed(2)}`);
+            } else {
+                alert("Plano não encontrado.");
+            }
+        }
+    </script>
+</body>
+</html>

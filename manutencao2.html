@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+</head>
+<body>
+    <h1>Consulta de Registros</h1>
+    
+    <button class="button" onclick="window.location.href='manutencao.html'">Novo Registro</button>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Exemplo de um registro -->
+            <tr>
+                <td>1</td>
+                <td>Bianca</td>
+                <td>bianca@gmail.com</td>
+                <td>
+                    <button class="button" onclick="editarRegistro(1)">Editar</button>
+                    <button class="button" onclick="excluirRegistro(1)">Excluir</button>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Bianca</td>
+                <td>bianca@gmail.com</td>
+                <td>
+                    <button class="button" onclick="editarRegistro(2)">Editar</button>
+                    <button class="button" onclick="excluirRegistro(2)">Excluir</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function editarRegistro(id) {
+            // Redireciona para a página de manutenção (editar)
+            window.location.href = `manutencao.html?id=${id}`;
+        }
+
+        function excluirRegistro(id) {
+            // Exclui o registro (no backend) e atualiza a lista
+            alert(`Registro ${id} excluído.`);
+        }
+    </script>
+</body>
+</html>
